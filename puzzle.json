@@ -1,25 +1,25 @@
 {
   "size": 5,
   "solution": [
-    ["J", "A", "M", "#", "#"],
-    ["O", "N", "I", "O", "N"],
-    ["#", "R", "I", "C", "E"],
-    ["J", "U", "I", "C", "E"],
-    ["#", "#", "T", "E", "A"]
+    ["P", "O", "P", "#", "#"],
+    ["O", "S", "C", "A", "R"],
+    ["#", "C", "O", "M", "I"],
+    ["B", "A", "R", "B", "I"],
+    ["#", "#", "N", "B", "A"]
   ],
   "clues": {
     "across": {
-      "1": "Fruit spread on toast",
-      "4": "Layered root vegetable that makes you cry",
-      "6": "Grain in paella and sushi",
-      "7": "Liquid squeezed from citrus or berries",
-      "8": "Hot steeped herbal or caffeinated drink"
+      "1": "Genre for Swift, Gaga, or Dua Lipa",
+      "3": "Prestigious golden movie statuette",
+      "5": "Short for a graphic novel / funny book format",
+      "6": "Greta Gerwig's pink-tinted 2023 box office smash (informally)",
+      "7": "League where LeBron and Steph compete"
     },
     "down": {
-      "1": "Short for Japanese culinary master (or just 'Joe')",
-      "2": "Grain or food ingredient (alt: corn unit)",
-      "3": "Food made from ground grain or cocoa",
-      "5": "Pleasant aroma from warm baked goods"
+      "1": "Celebrity's personal photos or movie release preview",
+      "2": "Awards given for outstanding achievement in American television",
+      "3": "Popular online gaming forum or Marvel discussion thread",
+      "4": "Movie rating tag: 'Parental Guidance Suggested'"
     }
   }
 }
