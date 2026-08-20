@@ -6,21 +6,6 @@
   <title>Developer Portal - Crossword Studio</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .login-box {
-      max-width: 380px;
-      margin: 4rem auto;
-      padding: 2rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      text-align: center;
-    }
-    .login-box input {
-      width: 100%;
-      padding: 0.6rem;
-      margin: 1rem 0;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-    }
     .builder-cell input {
       font-size: 1.2rem;
       font-weight: bold;
@@ -31,51 +16,36 @@
 <body>
 
 <div class="container">
-  <!-- Auth Gate -->
-  <div id="authGate" class="login-box">
-    <h2>Developer Login</h2>
-    <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Default password: <code>admin123</code></p>
-    <form onsubmit="handleAuth(event)">
-      <input type="password" id="devPassword" placeholder="Enter Developer Passcode" required>
-      <button type="submit" class="btn btn-primary" style="width: 100%;">Unlock Portal</button>
-    </form>
-    <p id="authError" style="color: var(--wrong); font-size: 0.85rem; margin-top: 0.5rem; display: none;">Invalid Passcode</p>
+  <header>
+    <h1>Developer Studio</h1>
+    <div>
+      <a href="index.html" class="btn" target="_blank">Test Game ↗</a>
+    </div>
+  </header>
+
+  <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem;">
+    Type your word solution directly into the grid. Enter <code>#</code> or leave empty to set a <strong>black block</strong>.
+  </p>
+
+  <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
+    <div class="grid-container">
+      <div id="builderGrid" class="grid"></div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 0.75rem; justify-content: center;">
+      <button class="btn btn-primary" onclick="saveAndPublish()">💾 Save to Browser</button>
+      <button class="btn" onclick="generateClueInputs()">🔄 Refresh Clues from Grid</button>
+      <button class="btn" onclick="restoreDefaults()">↺ Reset to Default Food Puzzle</button>
+    </div>
   </div>
 
-  <!-- Developer Workspace -->
-  <div id="devWorkspace" style="display: none;">
-    <header>
-      <h1>Developer Studio</h1>
-      <div>
-        <a href="index.html" class="btn" target="_blank">Test Game ↗</a>
-        <button class="btn btn-danger" onclick="logout()">Logout</button>
-      </div>
-    </header>
-
-    <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem;">
-      Type your word solution directly into the grid. Enter <code>#</code> or leave empty to set a <strong>black block</strong>.
-    </p>
-
-    <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
-      <div class="grid-container">
-        <div id="builderGrid" class="grid"></div>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 0.75rem; justify-content: center;">
-        <button class="btn btn-primary" onclick="saveAndPublish()">💾 Save & Publish to Game</button>
-        <button class="btn" onclick="generateClueInputs()">🔄 Refresh Clues from Grid</button>
-        <button class="btn" onclick="restoreDefaults()">↺ Reset to Default Food Puzzle</button>
-      </div>
+  <div class="clues-container">
+    <div>
+      <h3>Across Clues</h3>
+      <div id="builderAcrossClues"></div>
     </div>
-
-    <div class="clues-container">
-      <div>
-        <h3>Across Clues</h3>
-        <div id="builderAcrossClues"></div>
-      </div>
-      <div>
-        <h3>Down Clues</h3>
-        <div id="builderDownClues"></div>
-      </div>
+    <div>
+      <h3>Down Clues</h3>
+      <div id="builderDownClues"></div>
     </div>
   </div>
 </div>

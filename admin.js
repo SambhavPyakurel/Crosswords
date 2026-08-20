@@ -1,7 +1,3 @@
-// Hashed passcode for 'admin123'
-// Hashed passcode for 'admin123'
-const DEV_AUTH_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa82280f1a82e3a0a";
-
 let activePuzzle = {
   size: 5,
   solution: [
@@ -14,62 +10,11 @@ let activePuzzle = {
   clues: { across: {}, down: {} }
 };
 
-// Reliable SHA-256 Utility
-async function sha256(str) {
-  const msgBuffer = new TextEncoder().encode(str.trim());
-  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-async function handleAuth(e) {
-  e.preventDefault();
-  const inputEl = document.getElementById('devPassword');
-  const errEl = document.getElementById('authError');
-  const val = inputEl.value;
-
-  try {
-    const hash = await sha256(val);
-
-    if (hash === DEV_AUTH_HASH) {
-      errEl.style.display = 'none';
-      sessionStorage.setItem('devLoggedIn', 'true');
-      initWorkspace();
-    } else {
-      errEl.style.display = 'block';
-    }
-  } catch (err) {
-    console.error("Auth error:", err);
-    errEl.textContent = "Browser cryptography error. Try another browser.";
-    errEl.style.display = 'block';
-  }
-}
-
-async function handleAuth(e) {
-  e.preventDefault();
-  const val = document.getElementById('devPassword').value;
-  const hash = await sha256(val);
-
-  if (hash === DEV_AUTH_HASH) {
-    sessionStorage.setItem('devLoggedIn', 'true');
-    initWorkspace();
-  } else {
-    document.getElementById('authError').style.display = 'block';
-  }
-}
-
-function logout() {
-  sessionStorage.removeItem('devLoggedIn');
-  window.location.reload();
-}
-
 function initWorkspace() {
-  document.getElementById('authGate').style.display = 'none';
-  document.getElementById('devWorkspace').style.display = 'block';
-
   const stored = localStorage.getItem('crosswordPuzzleData');
-  if (stored) activePuzzle = JSON.parse(stored);
-
+  if (stored) {
+    activePuzzle = JSON.parse(stored);
+  }
   renderBuilderGrid();
 }
 
@@ -168,7 +113,7 @@ function createClueField(container, type, num) {
 
 function saveAndPublish() {
   localStorage.setItem('crosswordPuzzleData', JSON.stringify(activePuzzle));
-  alert('Crossword successfully published! Open or refresh index.html to play.');
+  alert('Saved to local browser! Refresh index.html to test.');
 }
 
 function restoreDefaults() {
@@ -176,7 +121,5 @@ function restoreDefaults() {
   window.location.reload();
 }
 
-// Session Check
-if (sessionStorage.getItem('devLoggedIn') === 'true') {
-  initWorkspace();
-}
+// Load workspace immediately on page open
+initWorkspace();
