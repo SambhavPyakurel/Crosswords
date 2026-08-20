@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Mini Crossword</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>The Mini Crossword</h1>
+    <span style="font-size: 0.85rem; color: #64748b;">Theme: Food</span>
+  </header>
+
+  <main class="crossword-layout">
+    <div>
+      <div class="grid-container">
+        <div id="playGrid" class="grid"></div>
+      </div>
+      <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+        <button class="btn btn-primary" onclick="checkPuzzle()">Check</button>
+        <button class="btn" onclick="revealPuzzle()">Reveal</button>
+        <button class="btn" onclick="resetPlayerGrid()">Reset</button>
+      </div>
+      <div id="statusMessage" class="status-msg"></div>
+    </div>
+
+    <div class="clues-container">
+      <div class="clue-list">
+        <h3>Across</h3>
+        <div id="acrossClues"></div>
+      </div>
+      <div class="clue-list">
+        <h3>Down</h3>
+        <div id="downClues"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="player.js"></script>
+</body>
+</html>
