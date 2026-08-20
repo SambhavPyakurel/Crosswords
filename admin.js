@@ -7,16 +7,22 @@ let activePuzzle = {
     ['J', 'U', 'I', 'C', 'E'],
     ['#', '#', 'T', 'E', 'A']
   ],
-  clues: { across: {}, down: {} }
-};
-
-function initWorkspace() {
-  const stored = localStorage.getItem('crosswordPuzzleData');
-  if (stored) {
-    activePuzzle = JSON.parse(stored);
+  clues: {
+    across: {
+      1: "Fruit spread on toast",
+      4: "Layered root vegetable that makes you cry",
+      6: "Grain in paella and sushi",
+      7: "Liquid squeezed from citrus or berries",
+      8: "Hot steeped herbal or caffeinated drink"
+    },
+    down: {
+      1: "Short for Japanese culinary master (or just 'Joe')",
+      2: "Grain or food ingredient (alt: corn unit)",
+      3: "Food made from ground grain or cocoa",
+      5: "Pleasant aroma from warm baked goods"
+    }
   }
-  renderBuilderGrid();
-}
+};
 
 function renderBuilderGrid() {
   const gridEl = document.getElementById('builderGrid');
@@ -111,15 +117,14 @@ function createClueField(container, type, num) {
   container.appendChild(wrapper);
 }
 
-function saveAndPublish() {
-  localStorage.setItem('crosswordPuzzleData', JSON.stringify(activePuzzle));
-  alert('Saved to local browser! Refresh index.html to test.');
+function downloadPuzzleJSON() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activePuzzle, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", "puzzle.json");
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
 }
 
-function restoreDefaults() {
-  localStorage.removeItem('crosswordPuzzleData');
-  window.location.reload();
-}
-
-// Load workspace immediately on page open
-initWorkspace();
+renderBuilderGrid();

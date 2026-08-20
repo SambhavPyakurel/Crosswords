@@ -1,33 +1,4 @@
-// Default Puzzle State
-const defaultPuzzle = {
-  size: 5,
-  solution: [
-    ['J', 'A', 'M', '#', '#'],
-    ['O', 'N', 'I', 'O', 'N'],
-    ['#', 'R', 'I', 'C', 'E'],
-    ['J', 'U', 'I', 'C', 'E'],
-    ['#', '#', 'T', 'E', 'A']
-  ],
-  clues: {
-    across: {
-      1: "Fruit spread on toast",
-      4: "Layered root vegetable that makes you cry",
-      6: "Grain in paella and sushi",
-      7: "Liquid squeezed from citrus or berries",
-      8: "Hot steeped herbal or caffeinated drink"
-    },
-    down: {
-      1: "Short for Japanese culinary master (or just 'Joe')",
-      2: "Grain or food ingredient (alt: corn unit)",
-      3: "Food made from ground grain or cocoa",
-      5: "Pleasant aroma from warm baked goods"
-    }
-  }
-};
-
-// Load custom puzzle from Developer updates if available
-const storedData = localStorage.getItem('crosswordPuzzleData');
-const puzzleData = storedData ? JSON.parse(storedData) : defaultPuzzle;
+let puzzleData = null;
 
 let playerState = {
   grid: Array(5).fill(null).map(() => Array(5).fill('')),
@@ -35,6 +6,18 @@ let playerState = {
   selectedCol: 0,
   direction: 'across'
 };
+
+async function initPlayer() {
+  try {
+    const res = await fetch(`puzzle.json?t=${Date.now()}`);
+    if (!res.ok) throw new Error("Could not load puzzle data");
+    puzzleData = await res.json();
+    renderPlayGrid();
+  } catch (err) {
+    console.error("Failed to load puzzle:", err);
+    document.getElementById('statusMessage').textContent = "Failed to load puzzle.";
+  }
+}
 
 function computeGridNumbers(grid) {
   let count = 1;
@@ -245,5 +228,4 @@ function resetPlayerGrid() {
   document.getElementById('statusMessage').textContent = "";
 }
 
-// Start game
-renderPlayGrid();
+initPlayer();
