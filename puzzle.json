@@ -1,25 +1,101 @@
 {
-  "size": 5,
+  "size": 8,
   "solution": [
-    ["P", "O", "P", "#", "#"],
-    ["O", "S", "C", "A", "R"],
-    ["#", "C", "O", "M", "I"],
-    ["B", "A", "R", "B", "I"],
-    ["#", "#", "N", "B", "A"]
+    [
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "#",
+      "X"
+    ],
+    [
+      "#",
+      "X",
+      "#",
+      "X",
+      "#",
+      "X",
+      "#",
+      "X"
+    ],
+    [
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "X"
+    ],
+    [
+      "#",
+      "X",
+      "#",
+      "X",
+      "#",
+      "X",
+      "#",
+      "X"
+    ],
+    [
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "X"
+    ],
+    [
+      "#",
+      "X",
+      "X",
+      "X",
+      "#",
+      "X",
+      "#",
+      "X"
+    ],
+    [
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "X",
+      "X"
+    ],
+    [
+      "#",
+      "#",
+      "#",
+      "X",
+      "#",
+      "X",
+      "#",
+      "#"
+    ]
   ],
   "clues": {
     "across": {
-      "1": "Genre for Swift, Gaga, or Dua Lipa",
-      "3": "Prestigious golden movie statuette",
-      "5": "Short for a graphic novel / funny book format",
-      "6": "Greta Gerwig's pink-tinted 2023 box office smash (informally)",
-      "7": "League where LeBron and Steph compete"
+      "1": "this and that",
+      "6": "That and that ",
+      "7": "This and that and this",
+      "9": "This this and this",
+      "10": "That that and that"
     },
     "down": {
-      "1": "Celebrity's personal photos or movie release preview",
-      "2": "Awards given for outstanding achievement in American television",
-      "3": "Popular online gaming forum or Marvel discussion thread",
-      "4": "Movie rating tag: 'Parental Guidance Suggested'"
+      "2": "this is that",
+      "3": "this isn't that",
+      "4": "that ain't this",
+      "5": "this",
+      "8": "that"
     }
   }
 }

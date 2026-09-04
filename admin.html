@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Local Crossword Studio</title>
+  <title>Weekly Crossword Studio</title>
   <link rel="stylesheet" href="style.css">
   <style>
     .builder-cell input {
@@ -17,11 +17,11 @@
 
 <div class="container">
   <header>
-    <h1>Local Crossword Studio</h1>
-    <span style="font-size: 0.85rem; color: #64748b;">Design & Export</span>
+    <h1>Weekly Crossword Studio</h1>
+    <span>Weekly 8x8 Builder</span>
   </header>
 
-  <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem;">
+  <p class="helper-text">
     Type your word solutions in the grid. Use <code>#</code> or leave a cell blank to create a <strong>black block</strong>.
   </p>
 
@@ -30,8 +30,8 @@
       <div id="builderGrid" class="grid"></div>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.75rem; justify-content: center;">
-      <button class="btn btn-primary" onclick="downloadPuzzleJSON()">📥 Download puzzle.json</button>
-      <button class="btn" onclick="generateClueInputs()">🔄 Refresh Clues from Grid</button>
+      <button class="btn btn-primary" onclick="downloadPuzzleJSON()">Download puzzle.json</button>
+      <button class="btn" onclick="generateClueInputs()">Refresh Clues from Grid</button>
     </div>
   </div>
 

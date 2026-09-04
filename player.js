@@ -1,7 +1,7 @@
 let puzzleData = null;
 
 let playerState = {
-  grid: Array(5).fill(null).map(() => Array(5).fill('')),
+  grid: [],
   selectedRow: 0,
   selectedCol: 0,
   direction: 'across'
@@ -12,6 +12,9 @@ async function initPlayer() {
     const res = await fetch(`puzzle.json?t=${Date.now()}`);
     if (!res.ok) throw new Error("Could not load puzzle data");
     puzzleData = await res.json();
+
+    playerState.grid = makeEmptyGrid(getPuzzleSize());
+    selectFirstPlayableCell();
     renderPlayGrid();
   } catch (err) {
     console.error("Failed to load puzzle:", err);
@@ -19,16 +22,48 @@ async function initPlayer() {
   }
 }
 
+function getPuzzleSize() {
+  return puzzleData.size || puzzleData.solution.length;
+}
+
+function makeEmptyGrid(size) {
+  return Array(size).fill(null).map(() => Array(size).fill(''));
+}
+
+function isBlock(grid, r, c) {
+  return grid[r][c] === '#' || grid[r][c] === '';
+}
+
+function isPlayableCell(r, c) {
+  const size = getPuzzleSize();
+  return r >= 0 && r < size && c >= 0 && c < size && !isBlock(puzzleData.solution, r, c);
+}
+
+function selectFirstPlayableCell() {
+  const size = getPuzzleSize();
+
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      if (isPlayableCell(r, c)) {
+        playerState.selectedRow = r;
+        playerState.selectedCol = c;
+        return;
+      }
+    }
+  }
+}
+
 function computeGridNumbers(grid) {
   let count = 1;
-  let numbering = Array(5).fill(null).map(() => Array(5).fill(null));
+  const size = grid.length;
+  const numbering = Array(size).fill(null).map(() => Array(size).fill(null));
 
-  for (let r = 0; r < 5; r++) {
-    for (let c = 0; c < 5; c++) {
-      if (grid[r][c] === '#' || grid[r][c] === '') continue;
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      if (isBlock(grid, r, c)) continue;
 
-      const needsAcross = (c === 0 || grid[r][c - 1] === '#') && (c + 1 < 5 && grid[r][c + 1] !== '#');
-      const needsDown = (r === 0 || grid[r - 1][c] === '#') && (r + 1 < 5 && grid[r + 1][c] !== '#');
+      const needsAcross = (c === 0 || grid[r][c - 1] === '#') && (c + 1 < size && grid[r][c + 1] !== '#');
+      const needsDown = (r === 0 || grid[r - 1][c] === '#') && (r + 1 < size && grid[r + 1][c] !== '#');
 
       if (needsAcross || needsDown) {
         numbering[r][c] = count++;
@@ -40,18 +75,20 @@ function computeGridNumbers(grid) {
 
 function renderPlayGrid() {
   const gridEl = document.getElementById('playGrid');
+  const size = getPuzzleSize();
   gridEl.innerHTML = '';
+  gridEl.style.setProperty('--grid-size', size);
   const numbering = computeGridNumbers(puzzleData.solution);
 
-  for (let r = 0; r < 5; r++) {
-    for (let c = 0; c < 5; c++) {
-      const isBlock = puzzleData.solution[r][c] === '#' || puzzleData.solution[r][c] === '';
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      const blocked = isBlock(puzzleData.solution, r, c);
       const cell = document.createElement('div');
-      cell.className = `cell ${isBlock ? 'blocked' : ''}`;
+      cell.className = `cell ${blocked ? 'blocked' : ''}`;
       cell.dataset.row = r;
       cell.dataset.col = c;
 
-      if (!isBlock) {
+      if (!blocked) {
         const num = numbering[r][c];
         if (num) {
           const span = document.createElement('span');
@@ -101,10 +138,28 @@ function handleKeyDown(e, r, c) {
     return;
   }
 
-  if (e.key === "ArrowRight") { moveCursorExplicit(0, 1); return; }
-  if (e.key === "ArrowLeft") { moveCursorExplicit(0, -1); return; }
-  if (e.key === "ArrowDown") { moveCursorExplicit(1, 0); return; }
-  if (e.key === "ArrowUp") { moveCursorExplicit(-1, 0); return; }
+  if (e.key === "ArrowRight") {
+    e.preventDefault();
+    moveCursorExplicit(0, 1);
+    return;
+  }
+  if (e.key === "ArrowLeft") {
+    e.preventDefault();
+    moveCursorExplicit(0, -1);
+    return;
+  }
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    playerState.direction = 'down';
+    moveCursorExplicit(1, 0);
+    return;
+  }
+  if (e.key === "ArrowUp") {
+    e.preventDefault();
+    playerState.direction = 'down';
+    moveCursorExplicit(-1, 0);
+    return;
+  }
 
   if (/^[A-Z]$/.test(key)) {
     e.preventDefault();
@@ -119,7 +174,7 @@ function moveCursor(step) {
   if (direction === 'across') c += step;
   else r += step;
 
-  if (r >= 0 && r < 5 && c >= 0 && c < 5 && puzzleData.solution[r][c] !== '#') {
+  if (isPlayableCell(r, c)) {
     playerState.selectedRow = r;
     playerState.selectedCol = c;
     highlightCells();
@@ -128,11 +183,14 @@ function moveCursor(step) {
 }
 
 function moveCursorExplicit(dr, dc) {
-  let r = playerState.selectedRow + dr;
-  let c = playerState.selectedCol + dc;
-  if (r >= 0 && r < 5 && c >= 0 && c < 5 && puzzleData.solution[r][c] !== '#') {
+  const r = playerState.selectedRow + dr;
+  const c = playerState.selectedCol + dc;
+
+  if (isPlayableCell(r, c)) {
     playerState.selectedRow = r;
     playerState.selectedCol = c;
+    if (dc !== 0) playerState.direction = 'across';
+    if (dr !== 0) playerState.direction = 'down';
     highlightCells();
     focusCell(r, c);
   }
@@ -144,29 +202,49 @@ function focusCell(r, c) {
 }
 
 function renderPlayGridValues() {
-  for (let r = 0; r < 5; r++) {
-    for (let c = 0; c < 5; c++) {
+  const size = getPuzzleSize();
+
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
       const input = document.querySelector(`#playGrid .cell[data-row='${r}'][data-col='${c}'] input`);
       if (input) input.value = playerState.grid[r][c];
     }
   }
 }
 
-function highlightCells() {
+function getCurrentWordCells() {
+  const cells = [];
+  const size = getPuzzleSize();
   const { selectedRow: sr, selectedCol: sc, direction } = playerState;
-  document.querySelectorAll('#playGrid .cell').forEach(c => {
-    c.classList.remove('highlighted', 'focused');
+  let r = sr;
+  let c = sc;
+
+  while (direction === 'across' && c > 0 && isPlayableCell(r, c - 1)) c--;
+  while (direction === 'down' && r > 0 && isPlayableCell(r - 1, c)) r--;
+
+  while (r < size && c < size && isPlayableCell(r, c)) {
+    cells.push([r, c]);
+    if (direction === 'across') c++;
+    else r++;
+  }
+
+  return cells;
+}
+
+function highlightCells() {
+  document.querySelectorAll('#playGrid .cell').forEach((cell) => {
+    cell.classList.remove('highlighted', 'focused');
   });
 
-  for (let r = 0; r < 5; r++) {
-    for (let c = 0; c < 5; c++) {
-      if (puzzleData.solution[r][c] === '#') continue;
-      const cell = document.querySelector(`#playGrid .cell[data-row='${r}'][data-col='${c}']`);
-      const isCurrentWord = (direction === 'across' && r === sr) || (direction === 'down' && c === sc);
-      if (isCurrentWord) cell.classList.add('highlighted');
-      if (r === sr && c === sc) cell.classList.add('focused');
-    }
+  for (const [r, c] of getCurrentWordCells()) {
+    const cell = document.querySelector(`#playGrid .cell[data-row='${r}'][data-col='${c}']`);
+    if (cell) cell.classList.add('highlighted');
   }
+
+  const focused = document.querySelector(
+    `#playGrid .cell[data-row='${playerState.selectedRow}'][data-col='${playerState.selectedCol}']`
+  );
+  if (focused) focused.classList.add('focused');
 }
 
 function renderClues() {
@@ -176,27 +254,34 @@ function renderClues() {
   downContainer.innerHTML = '';
 
   for (const [num, clue] of Object.entries(puzzleData.clues.across)) {
-    const item = document.createElement('div');
-    item.className = 'clue-item';
-    item.innerHTML = `<strong>${num}.</strong> ${clue}`;
-    acrossContainer.appendChild(item);
+    acrossContainer.appendChild(createClueItem(num, clue));
   }
 
   for (const [num, clue] of Object.entries(puzzleData.clues.down)) {
-    const item = document.createElement('div');
-    item.className = 'clue-item';
-    item.innerHTML = `<strong>${num}.</strong> ${clue}`;
-    downContainer.appendChild(item);
+    downContainer.appendChild(createClueItem(num, clue));
   }
+}
+
+function createClueItem(num, clue) {
+  const item = document.createElement('div');
+  const number = document.createElement('strong');
+  const text = document.createTextNode(` ${clue}`);
+
+  item.className = 'clue-item';
+  number.textContent = `${num}.`;
+  item.appendChild(number);
+  item.appendChild(text);
+  return item;
 }
 
 function checkPuzzle() {
   let allCorrect = true;
   let complete = true;
+  const size = getPuzzleSize();
   const msg = document.getElementById('statusMessage');
 
-  for (let r = 0; r < 5; r++) {
-    for (let c = 0; c < 5; c++) {
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
       if (puzzleData.solution[r][c] === '#') continue;
       const val = playerState.grid[r][c];
       if (!val) complete = false;
@@ -206,10 +291,10 @@ function checkPuzzle() {
 
   if (complete && allCorrect) {
     msg.style.color = "var(--correct)";
-    msg.textContent = "🎉 Congratulations! You solved the mini crossword!";
+    msg.textContent = "Congratulations! You solved the 8x8 crossword.";
   } else if (!complete && allCorrect) {
     msg.style.color = "var(--primary)";
-    msg.textContent = "Looking good so far! Keep going.";
+    msg.textContent = "Looking good so far. Keep going.";
   } else {
     msg.style.color = "var(--wrong)";
     msg.textContent = "Some letters are incorrect or missing.";
@@ -223,7 +308,7 @@ function revealPuzzle() {
 }
 
 function resetPlayerGrid() {
-  playerState.grid = Array(5).fill(null).map(() => Array(5).fill(''));
+  playerState.grid = makeEmptyGrid(getPuzzleSize());
   renderPlayGridValues();
   document.getElementById('statusMessage').textContent = "";
 }
