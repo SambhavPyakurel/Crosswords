@@ -2,100 +2,126 @@
   "size": 8,
   "solution": [
     [
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
       "#",
-      "X"
+      "#",
+      "#",
+      "O",
+      "N",
+      "#",
+      "I",
+      "T"
     ],
     [
+      "O",
+      "R",
       "#",
-      "X",
+      "N",
+      "O",
       "#",
-      "X",
-      "#",
-      "X",
-      "#",
-      "X"
-    ],
-    [
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
-      "X"
-    ],
-    [
-      "#",
-      "X",
-      "#",
-      "X",
-      "#",
-      "X",
-      "#",
-      "X"
-    ],
-    [
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
-      "X"
-    ],
-    [
-      "#",
-      "X",
-      "X",
-      "X",
-      "#",
-      "X",
-      "#",
-      "X"
-    ],
-    [
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
-      "X",
-      "X"
+      "N",
+      "O"
     ],
     [
       "#",
       "#",
       "#",
-      "X",
       "#",
-      "X",
+      "#",
+      "#",
       "#",
       "#"
+    ],
+    [
+      "I",
+      "N",
+      "#",
+      "O",
+      "N",
+      "#",
+      "A",
+      "S"
+    ],
+    [
+      "N",
+      "O",
+      "#",
+      "N",
+      "O",
+      "#",
+      "N",
+      "O"
+    ],
+    [
+      "#",
+      "#",
+      "#",
+      "#",
+      "#",
+      "#",
+      "#",
+      "#"
+    ],
+    [
+      "T",
+      "O",
+      "#",
+      "S",
+      "O",
+      "#",
+      "G",
+      "O"
+    ],
+    [
+      "O",
+      "N",
+      "#",
+      "I",
+      "F",
+      "#",
+      "O",
+      "N"
     ]
   ],
   "clues": {
     "across": {
-      "1": "this and that",
-      "6": "That and that ",
-      "7": "This and that and this",
-      "9": "This this and this",
-      "10": "That that and that"
+      "1": "Start moving",
+      "3": "Switched from off",
+      "5": "The thing at hand",
+      "7": "Heraldic gold",
+      "8": "Opposite of yes",
+      "9": "Veto vote",
+      "10": "Inside",
+      "12": "Operating",
+      "14": "In the role of",
+      "16": "A refusal",
+      "17": "Negative answer",
+      "18": "Election-night vote against",
+      "19": "Toward",
+      "21": "Therefore",
+      "23": "Ancient board game",
+      "25": "Not off",
+      "26": "Conditional word",
+      "27": "About, as a topic"
     },
     "down": {
-      "2": "this is that",
-      "3": "this isn't that",
-      "4": "that ain't this",
-      "5": "this",
-      "8": "that"
+      "1": "Depart, as a green light says",
+      "2": "Heraldic word for gold",
+      "3": "Not off",
+      "4": "Opposite of yes",
+      "5": "Fashionable",
+      "6": "Toward",
+      "10": "Inside",
+      "11": "Veto vote",
+      "12": "Switched from off",
+      "13": "Refusal",
+      "14": "Article before a vowel sound",
+      "15": "Thus",
+      "19": "In the direction of",
+      "20": "Operating",
+      "21": "Ti's neighbor in solfege",
+      "22": "Belonging to",
+      "23": "Board game with black and white stones",
+      "24": "About, as a topic"
     }
   }
 }
